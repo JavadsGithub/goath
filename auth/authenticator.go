@@ -17,6 +17,7 @@ func Authenticate(tokenString string) (bool, error) {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 
+		// TODO: make the secret dynamic
 		return []byte("It'sMySecret"), nil
 	})
 	if err != nil {
@@ -24,6 +25,7 @@ func Authenticate(tokenString string) (bool, error) {
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
+		// TODO: evaluate claims and vlidate the token
 		fmt.Println(claims)
 		return true, nil
 	} else {
