@@ -30,7 +30,7 @@ func Authenticate(tokenString string, validator ClaimsValidator) (bool, error) {
 		return []byte(secret), nil
 	})
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
