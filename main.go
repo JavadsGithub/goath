@@ -19,6 +19,7 @@ func main() {
 	}
 
 	r := gin.Default()
+	r.Use(gin.Recovery())
 
 	r.POST("/authenticate", func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
