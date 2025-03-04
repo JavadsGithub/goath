@@ -1,59 +1,24 @@
 package main
 
 import (
-	"log"
-	"net/http"
-	"os"
-
-	"github.com/JavadsGithub/goath/auth"
-	"github.com/JavadsGithub/goath/auth/validators"
+	"github.com/JavadsGithub/goath/config"
+	"github.com/JavadsGithub/goath/controllers"
+	"github.com/JavadsGithub/goath/repositories"
+	"github.com/JavadsGithub/goath/services"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	// Load the .env file
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
-	}
+	db := config.InitDB()
 
-	r := gin.Default()
-	r.Use(gin.Recovery())
+	userRepo := repositories.NewUserRepository(db)
+	userService := services.NewUserService(*userRepo)
+	userController := controllers.NewUserController(*userService)
 
-	r.POST("/authenticate", func(c *gin.Context) {
-		token := c.GetHeader("Authorization")
+	router := gin.Default()
 
-		validatorKey := os.Getenv("JWT_VALIDATOR")
-		if len(validatorKey) < 1 {
-			validatorKey = "default"
-		}
-		validator := validators.GetValidators()[validatorKey]
-		if validator == nil {
-			validator = validators.DefaultClaimsValidator
-		}
+	router.GET("/users/:id", userController.GetUserById)
+	router.POST("/users", userController.CreateUser)
 
-		isAuthenticated, err := auth.Authenticate(token, validator)
-
-		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"error": err,
-			})
-		}
-
-		if isAuthenticated {
-			c.JSON(http.StatusOK, gin.H{
-				"success": true,
-				"msg":     "Authorized",
-			})
-		} else {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"success": false,
-				"error":   "Unauthorized",
-			})
-		}
-
-	})
-
-	r.Run()
+	router.Run(":8080")
 }

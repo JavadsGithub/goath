@@ -13,7 +13,7 @@ type Authenticator interface {
 	authenticate(tokenString string) bool
 }
 
-type ClaimsValidator func(claims jwt.MapClaims) bool
+type ClaimsValidator func(claims jwt.MapClaims) error
 
 func Authenticate(tokenString string, validator ClaimsValidator) (bool, error) {
 
@@ -34,10 +34,10 @@ func Authenticate(tokenString string, validator ClaimsValidator) (bool, error) {
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
-		if validated := validator(claims); validated {
-			return true, nil
+		if err := validator(claims); err != nil {
+			return false, err
 		} else {
-			return false, errors.New("invalid token claims")
+			return true, nil
 		}
 	} else {
 		return false, errors.New("token is not valid")
