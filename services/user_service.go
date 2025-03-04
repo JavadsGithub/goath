@@ -17,6 +17,10 @@ func (us *UserService) GetUserByID(id string) (*models.User, error) {
 	return us.userRepo.FindByID(id)
 }
 
+func (us *UserService) GetUserByEmail(email string) (*models.User, error) {
+	return us.userRepo.FindByEmail(email)
+}
+
 func (us *UserService) CreateUser(user *models.User) error {
 	return us.userRepo.Save(user)
 }
