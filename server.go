@@ -23,6 +23,8 @@ func main() {
 	router.POST("/register", authController.Register)
 	router.POST("/login", authController.Login)
 
+	router.GET("/users", userController.GetAllUsers)
+
 	// Protected routes
 	authRoutes := router.Group("/").Use(middleware.AuthMiddleware())
 	{

@@ -38,3 +38,11 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, user)
 }
+
+func (uc *UserController) GetAllUsers(c *gin.Context) {
+	users, err := uc.userService.GetAllUsers()
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err})
+	}
+	c.JSON(http.StatusOK, users)
+}
