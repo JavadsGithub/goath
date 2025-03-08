@@ -5,6 +5,8 @@ import (
 	"github.com/JavadsGithub/goath/repositories"
 )
 
+// FIXME: should get an interface!
+// HINT: should not be aware of repository
 type UserService struct {
 	userRepo repositories.UserRepository
 }
@@ -26,5 +28,6 @@ func (us *UserService) GetAllUsers() ([]*models.User, error) {
 }
 
 func (us *UserService) CreateUser(user *models.User) error {
+	// !
 	return us.userRepo.Save(user)
 }

@@ -9,9 +9,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// create a config manager for env, etc. + validation (a constant to pass around)
 func main() {
 	db := config.InitDB()
 
+	// Wiring
 	userRepo := repositories.NewUserRepository(db)
 	userService := services.NewUserService(*userRepo)
 	userController := controllers.NewUserController(*userService)

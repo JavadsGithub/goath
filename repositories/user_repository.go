@@ -38,7 +38,9 @@ func (ur *UserRepository) FindByEmail(email string) (*models.User, error) {
 	return &user, nil
 }
 
+// FIXME: should not get a user model to save! it should be an INPUT!
 func (ur *UserRepository) Save(user *models.User) error {
+	// FIXME: not a repository logic!
 	hasedPassword, err := utils.HashPassword(user.Password)
 	if err != nil {
 		return err
