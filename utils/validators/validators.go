@@ -1,7 +1,7 @@
 package validators
 
 import (
-	"github.com/JavadsGithub/goath/auth"
+	"github.com/JavadsGithub/goath/service/auth"
 )
 
 type ClaimValidators map[string]auth.ClaimsValidator
