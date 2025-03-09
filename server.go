@@ -11,6 +11,8 @@ import (
 
 // create a config manager for env, etc. + validation (a constant to pass around)
 func main() {
+	config.LoadConfig()
+
 	db := config.InitDB()
 
 	// Wiring
